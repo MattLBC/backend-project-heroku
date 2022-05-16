@@ -30,8 +30,9 @@ describe("GET api/categories", () => {
       .get("/api/categories")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toBeInstanceOf(Array);
-        body.forEach((category) => {
+        expect(body).toBeInstanceOf(Object);
+        expect(body.categories).toBeInstanceOf(Array);
+        body.categories.forEach((category) => {
           expect.objectContaining({
             slug: expect.any(String),
             description: expect.any(String),
