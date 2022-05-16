@@ -82,23 +82,24 @@ describe("GET api/reviews/review_id", () => {
 describe("PATCH api/reviews/:review_id", () => {
   test("Status 200 - Responds with review and updated vote count", () => {
     const bodyToSend = { inc_votes: 15 };
+    const updatedReview = {
+      review_id: 3,
+      title: "Ultimate Werewolf",
+      category: "social deduction",
+      designer: "Akihisa Okui",
+      owner: "bainesface",
+      review_body: "We couldn't find the werewolf!",
+      review_img_url:
+        "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+      created_at: "2021-01-18T10:01:41.251Z",
+      votes: 20,
+    };
     return request(app)
       .patch("/api/reviews/3")
       .send(bodyToSend)
       .expect(201)
-      .then(({ body : { review } }) => {
-        expect.objectContaining({
-            review_id: expect.any(Number),
-            title: expect.any(String),
-            review_body: expect.any(String),
-            designer: expect.any(String),
-            review_img_url: expect.any(String),
-            votes: expect.any(Number),
-            category: expect.any(String),
-            owner: expect.any(String),
-            created_at: expect.any(String),
-          });
-        expect(review.votes).toBe(20)
+      .then(({ body: { review } }) => {
+        expect(review).toEqual(updatedReview);
       });
   });
   test("Status 404 - no review of that number", () => {
@@ -123,6 +124,16 @@ describe("PATCH api/reviews/:review_id", () => {
   });
   test("Status 400 - not a number passed as review_id", () => {
     const bodyToSend = { inc_votes: "banana" };
+    return request(app)
+      .patch("/api/reviews/3")
+      .send(bodyToSend)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Status 400 - not key of inc_votes in body of patch request", () => {
+    const bodyToSend = { banana: 15 };
     return request(app)
       .patch("/api/reviews/3")
       .send(bodyToSend)

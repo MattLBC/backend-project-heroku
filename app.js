@@ -1,9 +1,9 @@
 const express = require("express");
+const { getCategories } = require("./controllers/categories_controller");
 const {
-  getCategories,
   getReviewById,
   patchReviews,
-} = require("./controllers/categories_controller");
+} = require("./controllers/review_controllers");
 
 const app = express();
 app.use(express.json());
@@ -34,7 +34,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    console.log(err)
+  console.log(err);
   res.status(500).send({ msg: "Internal server error" });
 });
 
