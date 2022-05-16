@@ -48,7 +48,6 @@ describe("GET api/reviews/review_id", () => {
       .get("/api/reviews/3")
       .expect(200)
       .then(({ body: { review } }) => {
-        expect(review).toBeInstanceOf(Object);
         expect.objectContaining({
           review_id: expect.any(Number),
           title: expect.any(String),
@@ -73,6 +72,60 @@ describe("GET api/reviews/review_id", () => {
   test("Status 400 - Bad request", () => {
     return request(app)
       .get("/api/reviews/banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+describe("PATCH api/reviews/:review_id", () => {
+  test("Status 200 - Responds with review and updated vote count", () => {
+    const bodyToSend = { inc_votes: 15 };
+    return request(app)
+      .patch("/api/reviews/3")
+      .send(bodyToSend)
+      .expect(201)
+      .then(({ body : { review } }) => {
+        expect.objectContaining({
+            review_id: expect.any(Number),
+            title: expect.any(String),
+            review_body: expect.any(String),
+            designer: expect.any(String),
+            review_img_url: expect.any(String),
+            votes: expect.any(Number),
+            category: expect.any(String),
+            owner: expect.any(String),
+            created_at: expect.any(String),
+          });
+        expect(review.votes).toBe(20)
+      });
+  });
+  test("Status 404 - no review of that number", () => {
+    const bodyToSend = { inc_votes: 15 };
+    return request(app)
+      .patch("/api/reviews/9999")
+      .send(bodyToSend)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+  test("Status 400 - not a number passed as review_id", () => {
+    const bodyToSend = { inc_votes: 15 };
+    return request(app)
+      .patch("/api/reviews/banana")
+      .send(bodyToSend)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Status 400 - not a number passed as review_id", () => {
+    const bodyToSend = { inc_votes: "banana" };
+    return request(app)
+      .patch("/api/reviews/3")
+      .send(bodyToSend)
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad request");
