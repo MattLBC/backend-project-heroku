@@ -42,7 +42,7 @@ describe("GET api/categories", () => {
   });
 });
 
-describe("GET api/reviews/review_id", () => {
+describe.only("GET api/reviews/review_id", () => {
   test("Status 200 - responds with review object with correct properties", () => {
     return request(app)
       .get("/api/reviews/3")
@@ -58,6 +58,7 @@ describe("GET api/reviews/review_id", () => {
           category: expect.any(String),
           owner: expect.any(String),
           created_at: expect.any(String),
+          comment_count: expect.any(Number)
         });
       });
   });
