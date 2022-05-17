@@ -79,12 +79,12 @@ describe("GET api/reviews/review_id", () => {
   });
   test("Review object now has comment count", () => {
     return request(app)
-    .get("/api/reviews/3")
-    .expect(200)
-    .then(({ body: { review } }) => {
-      expect(review.comment_count).toBe(3)
-    });
-  })
+      .get("/api/reviews/3")
+      .expect(200)
+      .then(({ body: { review } }) => {
+        expect(review.comment_count).toBe(3);
+      });
+  });
 });
 
 describe("PATCH api/reviews/:review_id", () => {
@@ -157,16 +157,40 @@ describe("GET api/users", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
-      .then(({ body: {users} }) => {
+      .then(({ body: { users } }) => {
         expect(users).toBeInstanceOf(Array);
-        expect(users.length).toBeGreaterThan(0)
+        expect(users.length).toBeGreaterThan(0);
         users.forEach((user) => {
-            expect.objectContaining({
-                username: expect.any(String),
-                name: expect.any(String),
-                avatar_url: expect.any(String)
-            })
-        })
+          expect.objectContaining({
+            username: expect.any(String),
+            name: expect.any(String),
+            avatar_url: expect.any(String),
+          });
+        });
+      });
+  });
+});
+
+describe("GET api/reviews", () => {
+  test("Status 200: returns object with correct properties, sorted in decsending date order", () => {
+    return request(app)
+      .get("/api/reviews")
+      .expect(200)
+      .then(({ body: { reviews } }) => {
+        expect(reviews).toBeInstanceOf(Array);
+        expect(reviews.length).toBeGreaterThan(0);
+        reviews.forEach((review) => {
+          expect.objectContaining({
+            owner: expect.any(String),
+            title: expect.any(String),
+            review_id: expect.any(Number),
+            category: expect.any(String),
+            review_img_url: expect.any(String),
+            created_at: expect.any(String),
+            votes: expect.any(Number),
+            comment_count: expect.any(Number),
+          })
+        });
       });
   });
 });
