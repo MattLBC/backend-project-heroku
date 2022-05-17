@@ -172,7 +172,7 @@ describe("GET api/users", () => {
 });
 
 describe("GET api/reviews", () => {
-  test("Status 200: returns object with correct properties, sorted in decsending date order", () => {
+  test("Status 200: returns object with correct properties, sorted in decsending date created_at", () => {
     return request(app)
       .get("/api/reviews")
       .expect(200)
@@ -190,7 +190,8 @@ describe("GET api/reviews", () => {
             votes: expect.any(Number),
             comment_count: expect.any(Number),
           })
-        });
+        })
+        expect(reviews).toBeSortedBy("created_at", { descending: true, coerce: true})
       });
   });
 });
