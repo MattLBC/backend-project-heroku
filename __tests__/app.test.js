@@ -82,9 +82,17 @@ describe("GET api/reviews/review_id", () => {
       .get("/api/reviews/3")
       .expect(200)
       .then(({ body: { review } }) => {
-        expect(review.comment_count).toBe(3);
+        expect(review.comment_count).toBe("3");
       });
   });
+  test("Can produced review object with no comments", () => {
+    return request(app)
+      .get("/api/reviews/11")
+      .expect(200)
+      .then(({ body: { review } }) => {
+        expect(review.comment_count).toBe("0");
+      });
+  })
 });
 
 describe("PATCH api/reviews/:review_id", () => {
