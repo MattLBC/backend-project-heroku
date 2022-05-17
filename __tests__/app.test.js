@@ -58,7 +58,6 @@ describe("GET api/reviews/review_id", () => {
           category: expect.any(String),
           owner: expect.any(String),
           created_at: expect.any(String),
-          comment_count: expect.any(Number)
         });
       });
   });
@@ -78,6 +77,15 @@ describe("GET api/reviews/review_id", () => {
         expect(body.msg).toBe("Bad request");
       });
   });
+  test("Review object now has comment count", () => {
+    return request(app)
+    .get("/api/reviews/3")
+    .expect(200)
+    .then(({ body: { review } }) => {
+      console.log(review)
+      expect(review.comment_count).toBe(3)
+    });
+  })
 });
 
 describe("PATCH api/reviews/:review_id", () => {

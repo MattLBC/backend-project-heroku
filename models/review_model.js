@@ -1,29 +1,19 @@
 const db = require("../db/connection");
 
 exports.fetchReviewById = (review_id) => {
-  if(isNaN(parseInt(review_id))){
-    return Promise.reject({ status: 400, msg: "Bad request" });
-  }
-  const comment_count = db
-    .query(
-      `SELECT * FROM comments 
-      WHERE review_id = $1`,
-      [review_id]
-    )
-    .then((results) => {
-      return results.rows.length;
-    });
   return db
     .query(
-      `SELECT * FROM reviews
-      WHERE review_id = $1`,
+  `SELECT reviews.review_id, title, review_body, designer, review_img_url, reviews.votes, category, owner, reviews.created_at FROM reviews
+  JOIN comments ON reviews.review_id = comments.review_id
+  WHERE reviews.review_id = $1`,
       [review_id]
     )
     .then((results) => {
+      console.log(results.rows)
       if (!results.rows.length) {
         return Promise.reject({ status: 404, msg: "Not found" });
       }
-      results.rows[0].comment_count = comment_count;
+      results.rows[0].comment_count = results.rows.length
       return results.rows[0];
     });
 };
