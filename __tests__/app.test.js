@@ -42,7 +42,7 @@ describe("GET api/categories", () => {
   });
 });
 
-describe.only("GET api/reviews/review_id", () => {
+describe("GET api/reviews/review_id", () => {
   test("Status 200 - responds with review object with correct properties", () => {
     return request(app)
       .get("/api/reviews/3")
