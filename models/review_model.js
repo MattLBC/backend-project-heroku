@@ -9,7 +9,6 @@ exports.fetchReviewById = (review_id) => {
       [review_id]
     )
     .then((results) => {
-      console.log(results.rows)
       if (!results.rows.length) {
         return Promise.reject({ status: 404, msg: "Not found" });
       }

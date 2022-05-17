@@ -82,7 +82,6 @@ describe("GET api/reviews/review_id", () => {
     .get("/api/reviews/3")
     .expect(200)
     .then(({ body: { review } }) => {
-      console.log(review)
       expect(review.comment_count).toBe(3)
     });
   })
