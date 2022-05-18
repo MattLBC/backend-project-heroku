@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { sort } = require("../db/data/test-data/categories");
+const { checkExists } = require("../db/seeds/utils");
 
 exports.fetchReviewById = (review_id) => {
   return db
@@ -54,7 +54,7 @@ exports.fetchAllReviews = (
     "votes",
     "comment_count",
   ];
-  const categoryArray = []
+  const categoryArray = [];
 
   let queryStr = `SELECT reviews. *, COUNT(comments) AS comment_count
   FROM reviews
@@ -63,9 +63,9 @@ exports.fetchAllReviews = (
 
   if (category) {
     queryStr += ` WHERE category = $1 GROUP BY reviews.review_id`;
-    categoryArray.push(category)
+    categoryArray.push(category);
   } else {
-    queryStr += ` GROUP BY reviews.review_id`
+    queryStr += ` GROUP BY reviews.review_id`;
   }
 
   if (validSortBy.includes(sort_by)) {
@@ -80,8 +80,8 @@ exports.fetchAllReviews = (
   }
 
   return db.query(queryStr, categoryArray).then((results) => {
-    if (!results.rows.length){
-      return Promise.reject({status: 404, msg: "Not found"})
+    if (!results.rows.length) {
+      return checkExists("categories", "slug", category);
     }
     return results.rows;
   });

@@ -179,7 +179,7 @@ describe("GET api/users", () => {
   });
 });
 
-describe("GET api/reviews", () => {
+describe.only("GET api/reviews", () => {
   test("Status 200: returns object with correct properties, sorted in decsending date created_at", () => {
     return request(app)
       .get("/api/reviews")
@@ -238,18 +238,21 @@ describe("GET api/reviews", () => {
       });
   });
   test("Status 200: Can sort_by category", () => {
-    const euroGames = [{
-      review_id: 1,
-      title: 'Agricola',
-      category: 'euro game',
-      designer: 'Uwe Rosenberg',
-      owner: 'mallionaire',
-      review_body: 'Farmyard fun!',
-      review_img_url: 'https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png',
-      created_at: `2021-01-18T10:00:20.514Z`,
-      votes: 1,
-      comment_count: '0'
-    }]
+    const euroGames = [
+      {
+        review_id: 1,
+        title: "Agricola",
+        category: "euro game",
+        designer: "Uwe Rosenberg",
+        owner: "mallionaire",
+        review_body: "Farmyard fun!",
+        review_img_url:
+          "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+        created_at: `2021-01-18T10:00:20.514Z`,
+        votes: 1,
+        comment_count: "0",
+      },
+    ];
     return request(app)
       .get("/api/reviews?category=euro game")
       .expect(200)
@@ -263,6 +266,37 @@ describe("GET api/reviews", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Not found");
+      });
+  });
+  test("Status 200: Category exists but not reviews for it", () => {
+    return request(app)
+      .get("/api/reviews?category=children's games")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.msg).toBe("No reviews here yet!");
+      });
+  });
+
+  test("Status 200: Can sort_by category where a review has comments", () => {
+    return request(app)
+      .get("/api/reviews?category=social deduction")
+      .expect(200)
+      .then(({ body: { reviews } }) => {
+        expect(reviews[3]).toEqual(
+          expect.objectContaining({
+            review_id: 3,
+            title: "Ultimate Werewolf",
+            category: "social deduction",
+            designer: "Akihisa Okui",
+            owner: "bainesface",
+            review_body: "We couldn't find the werewolf!",
+            review_img_url:
+              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+            created_at: "2021-01-18T10:01:41.251Z",
+            votes: 5,
+            comment_count: "3",
+          })
+        );
       });
   });
 });
