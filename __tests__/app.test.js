@@ -179,7 +179,7 @@ describe("GET api/users", () => {
   });
 });
 
-describe.only("GET api/reviews", () => {
+describe("GET api/reviews", () => {
   test("Status 200: returns object with correct properties, sorted in decsending date created_at", () => {
     return request(app)
       .get("/api/reviews")
