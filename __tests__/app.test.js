@@ -253,7 +253,7 @@ describe("GET api/reviews/:review_id/comments", () => {
   });
 });
 
-describe.only("POST api/reviews/:review_id/comments", () => {
+describe("POST api/reviews/:review_id/comments", () => {
   test("Statuss 201: returns the comment", () => {
     const newComment = {
       username: "bainesface",
@@ -318,7 +318,7 @@ describe.only("POST api/reviews/:review_id/comments", () => {
         expect(body.msg).toBe("Route not found");
       });
   });
-  test.only("Status 404: User not in the database tries to post", () => {
+  test("Status 404: User not in the database tries to post", () => {
     const newComment = {
       username: "conolly_san",
       body: "I have no idea what you mean, dogs are the best players because they are always loyal",

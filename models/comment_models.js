@@ -27,7 +27,6 @@ exports.addNewCommentByReviewId = (username, body, review_id) => {
       [username, body, review_id]
     )
     .then((results) => {
-      console.log(results.rows[0])
       return results.rows[0];
     });
 };
