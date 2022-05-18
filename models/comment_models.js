@@ -15,3 +15,19 @@ exports.fetchCommentsByReviewId = (review_id) => {
       return results.rows;
     });
 };
+
+exports.addNewCommentByReviewId = (username, body, review_id) => {
+  if (!body || !username) {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+  return db
+    .query(
+      `INSERT INTO comments (author, body, review_id) 
+        VALUES ($1, $2, $3) RETURNING *`,
+      [username, body, review_id]
+    )
+    .then((results) => {
+      console.log(results.rows[0])
+      return results.rows[0];
+    });
+};
