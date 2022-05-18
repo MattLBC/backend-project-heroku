@@ -276,29 +276,6 @@ describe("GET api/reviews", () => {
         expect(body.msg).toBe("No reviews here yet!");
       });
   });
-
-  test("Status 200: Can sort_by category where a review has comments", () => {
-    return request(app)
-      .get("/api/reviews?category=social deduction")
-      .expect(200)
-      .then(({ body: { reviews } }) => {
-        expect(reviews[3]).toEqual(
-          expect.objectContaining({
-            review_id: 3,
-            title: "Ultimate Werewolf",
-            category: "social deduction",
-            designer: "Akihisa Okui",
-            owner: "bainesface",
-            review_body: "We couldn't find the werewolf!",
-            review_img_url:
-              "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
-            created_at: "2021-01-18T10:01:41.251Z",
-            votes: 5,
-            comment_count: "3",
-          })
-        );
-      });
-  });
 });
 
 describe("GET api/reviews/:review_id/comments", () => {
