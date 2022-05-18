@@ -271,7 +271,6 @@ describe("POST api/reviews/:review_id/comments", () => {
       .send(newComment)
       .expect(201)
       .then(({ body }) => {
-        expect(body).toBeInstanceOf(Object);
         expect(body).toEqual({
           created_at: expect.any(String),
           ...returnedComment,
