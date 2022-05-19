@@ -88,41 +88,42 @@
         "votes": 5,
         "comment_count": 3
       }
-    },
-
-    "GET /api/reviews/:review_id/comments": {
-      "description": "serves array of comments associated with a given review",
-      "queries": [],
-      "exampleResponse": {
-        "comments": [
-          {
-            "body": "My dog loved this game too!",
-            "votes": 3,
-            "author": "tickle122",
-            "review_id": 4,
-            "created_at": 1610964545410
-          },
-          {
-            "body": "I didn't know dogs could play games",
-            "votes": 10,
-            "author": "weegembump",
-            "review_id": 4,
-            "created_at": 1610964588110
-          }
-        ]
-      }
-    },
-    "POST /api/reviews/:review_id/comments": {
-      "description": "posts a new comment associated with a given review, responds with posted comment",
-      "queries": [],
-      "exampleResponse": {
-        "comment": {
+    }
+  },
+  
+  "GET /api/reviews/:review_id/comments": {
+    "description": "serves array of comments associated with a given review",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
           "body": "My dog loved this game too!",
           "votes": 3,
           "author": "tickle122",
           "review_id": 4,
           "created_at": 1610964545410
+        },
+        {
+          "body": "I didn't know dogs could play games",
+          "votes": 10,
+          "author": "weegembump",
+          "review_id": 4,
+          "created_at": 1610964588110
         }
+      ]
+    }
+  },
+
+  "POST /api/reviews/:review_id/comments": {
+    "description": "posts a new comment associated with a given review, responds with posted comment",
+    "queries": [],
+    "exampleResponse": {
+      "comment": {
+        "body": "My dog loved this game too!",
+        "votes": 3,
+        "author": "tickle122",
+        "review_id": 4,
+        "created_at": 1610964545410
       }
     }
   }
