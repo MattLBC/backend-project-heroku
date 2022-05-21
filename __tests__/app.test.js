@@ -435,3 +435,28 @@ describe("GET api", () => {
       );
   });
 });
+
+describe.only('GET api/users/:username', () => {
+  test("Status 200 - specified user data", () => {
+    const specificUser =   {
+      username: 'mallionaire',
+      name: 'haz',
+      avatar_url:
+        'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
+    }
+    return request(app)
+      .get("/api/users/mallionaire")
+      .expect(200)
+      .then(({ body: { user } }) => {
+        expect(user).toEqual(specificUser)
+      });
+  });
+  test("Status 404: user doesn't exist ", () => {
+    return request(app)
+      .get("/api/users/banana_fingers")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+});
