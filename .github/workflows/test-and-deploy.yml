@@ -12,11 +12,18 @@ jobs:
       - name: Checkout and clone repo
         uses: actions/checkout@v2
 
+      - name: Setup Postgres
+        uses: harmon758/postgresql-action@v1
+        with: 
+          postgresql db: test_db
+          postgresql user: tester_dude
+          postgresql password: tester_dude_pass
+
       - name: Install dependencies
         run: npm install
 
       - name: Test utils
-        run: npm test utils
+        run: PGDATABAE=test_db PGUSER=tester_dude PGPASSWORD=tester_dude_pass npm test utils
 
   test-app: 
     runs-on: ubuntu-latest
@@ -25,7 +32,7 @@ jobs:
       - name: Checkout and clone repo
         uses: actions/checkout@v2
 
-      - name: Stepu Postgres
+      - name: Setup Postgres
         uses: harmon758/postgresql-action@v1
         with: 
           postgresql db: test_db
