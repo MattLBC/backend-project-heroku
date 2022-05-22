@@ -138,7 +138,7 @@ describe("PATCH api/reviews/:review_id", () => {
         expect(body.msg).toBe("Bad request");
       });
   });
-  test("Status 400 - not a number passed as review_id", () => {
+  test("Status 400 - not a number passed as inc_votes", () => {
     const bodyToSend = { inc_votes: "banana" };
     return request(app)
       .patch("/api/reviews/3")
@@ -436,19 +436,19 @@ describe("GET api", () => {
   });
 });
 
-describe.only('GET api/users/:username', () => {
+describe("GET api/users/:username", () => {
   test("Status 200 - specified user data", () => {
-    const specificUser =   {
-      username: 'mallionaire',
-      name: 'haz',
+    const specificUser = {
+      username: "mallionaire",
+      name: "haz",
       avatar_url:
-        'https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg'
-    }
+        "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg",
+    };
     return request(app)
       .get("/api/users/mallionaire")
       .expect(200)
       .then(({ body: { user } }) => {
-        expect(user).toEqual(specificUser)
+        expect(user).toEqual(specificUser);
       });
   });
   test("Status 404: user doesn't exist ", () => {
@@ -457,6 +457,67 @@ describe.only('GET api/users/:username', () => {
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Not found");
+      });
+  });
+});
+
+describe("PATCH api/comments/:comment_id", () => {
+  test("Status 200 - Responds with comment and updated vote count", () => {
+    const bodyToSend = { inc_votes: 15 };
+    const updatedComment = {
+      comment_id: 3,
+      body: "I didn't know dogs could play games",
+      votes: 25,
+      author: "philippaclaire9",
+      review_id: 3,
+      created_at: expect.any(String),
+    };
+    return request(app)
+      .patch("/api/comments/3")
+      .send(bodyToSend)
+      .expect(201)
+      .then(({ body: { comment } }) => {
+        expect(comment).toEqual(updatedComment);
+      });
+  });
+  test("Status 404 - no comment of that id", () => {
+    const bodyToSend = { inc_votes: 15 };
+    return request(app)
+      .patch("/api/comments/9999")
+      .send(bodyToSend)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not found");
+      });
+  });
+  test("Status 400 - not a number passed as comment_id", () => {
+    const bodyToSend = { inc_votes: 15 };
+    return request(app)
+      .patch("/api/comments/banana")
+      .send(bodyToSend)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Status 400 - not a number passed as vote number", () => {
+    const bodyToSend = { inc_votes: "banana" };
+    return request(app)
+      .patch("/api/comments/3")
+      .send(bodyToSend)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("Status 400 - not key of inc_votes in body of patch request", () => {
+    const bodyToSend = { banana: 15 };
+    return request(app)
+      .patch("/api/comments/3")
+      .send(bodyToSend)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
       });
   });
 });
