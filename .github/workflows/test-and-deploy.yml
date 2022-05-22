@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Test utils
-        run: PGDATABAE=test_db PGUSER=tester_dude PGPASSWORD=tester_dude_pass npm test utils
+        run: PGDATABASE=test_db PGUSER=tester_dude PGPASSWORD=tester_dude_pass npm test utils
 
   test-app: 
     runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
         run: npm install
       
       - name: Test app
-        run: PGDATABAE=test_db PGUSER=tester_dude PGPASSWORD=tester_dude_pass npm test app
+        run: PGDATABASE=test_db PGUSER=tester_dude PGPASSWORD=tester_dude_pass npm test app
 
   deploy:
     runs-on: ubuntu-latest
