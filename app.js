@@ -5,8 +5,10 @@ const {
   handlePSQLErrors,
   handleCustomErrors,
 } = require("./controllers/error_controllers");
+const cors = require("cors");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use("/api", apiRouter);
 

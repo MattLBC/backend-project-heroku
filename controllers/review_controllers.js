@@ -42,3 +42,14 @@ exports.getAllReviews = (req, res, next) => {
       next(err);
     });
 };
+
+exports.postReview = (req, res, next) => {
+  const review = req.body;
+  addReview(review)
+    .then((newReview) => {
+      res.status(201).send({ newReview });
+    })
+    .catch((err) => {
+      next(err);
+    });
+};
